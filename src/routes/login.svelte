@@ -2,7 +2,7 @@
   import * as yup from "yup";
   import { login } from "$src/stores/auth";
   import FormErrs from "$src/components/formerrs.svelte";
-  import { navigate, useNavigate } from "svelte-navigator";
+  import { navigate } from "svelte-navigator";
 
   let loading = false;
   let touched = false;
@@ -36,7 +36,6 @@
       errs = <typeof errs>{};
       schema.validateSync(fields, { abortEarly: false });
       await login(fields.email, fields.password);
-      // useNavigate()("/");
       navigate("/");
     } catch (err) {
       if (err instanceof yup.ValidationError) {

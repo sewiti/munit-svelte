@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Link } from "svelte-navigator";
-  import { auth } from "$src/stores/auth";
+  import { token } from "$src/stores/auth";
 </script>
 
 <nav class="container">
@@ -12,9 +12,12 @@
     </li>
   </ul>
   <ul>
-    {#if $auth.loggedIn}
+    {#if $token !== ""}
       <li>
-        <Link to="/profile">Profile</Link>
+        <Link to="/projects">Projects</Link>
+      </li>
+      <li>
+        <Link to="/profile">My Profile</Link>
       </li>
       <li>
         <Link to="/logout">Logout</Link>

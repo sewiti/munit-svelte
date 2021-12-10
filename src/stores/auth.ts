@@ -1,35 +1,13 @@
 import { baseUrl } from "$src/constants";
+import { navigate } from "svelte-navigator";
 import { writable } from "svelte/store";
-import { fetchSelf, User } from "$src/stores/user";
-
-export type Auth = {
-  loggedIn: boolean;
-  user: User;
-};
-
-export const auth = writable(<Auth>{
-  loggedIn: true,
-});
 
 let authHeaderStr = "";
 
-const token = writable(localStorage.getItem("token") || "");
+export const token = writable(localStorage.getItem("token") || "");
 token.subscribe((token) => {
-  console.log({ token });
-  if (token === "") {
-    // localStorage.removeItem("token");
-    // auth.set(<Auth>{
-    //   loggedIn: false,
-    // });
-    // authHeaderStr = "";
-    return;
-  }
-
   localStorage.setItem("token", token);
   authHeaderStr = `Bearer ${token}`;
-  fetchSelf().catch(() => {
-    logout();
-  });
 });
 
 export const login = async (email: string, password: string): Promise<void> => {
@@ -48,26 +26,29 @@ export const login = async (email: string, password: string): Promise<void> => {
     body: JSON.stringify(body),
   });
 
-  switch (res.status) {
-    case 200: {
-      break; // continue
-    }
-    case 401: {
-      throw Error("bad login");
-    }
-    default: {
-      throw Error("unable to login");
-    }
+  if (!res.ok) {
+    throw Error(res.statusText);
   }
-
   const data = await res.json();
   token.set(data.token);
 };
 
 export const logout = () => {
   token.set("");
+  navigate("/");
 };
 
 export const authHeader = (): string => {
   return authHeaderStr;
+};
+
+export const handleStatus = (res: Response): boolean => {
+  if (res.status == 401) {
+    logout();
+    return false;
+  }
+  if (!res.ok) {
+    throw Error(res.statusText);
+  }
+  return true;
 };

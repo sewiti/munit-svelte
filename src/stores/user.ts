@@ -1,5 +1,6 @@
 import { baseUrl } from "$src/constants";
-import { Auth, auth, authHeader } from "$src/stores/auth";
+import { authHeader, handleStatus, logout } from "$src/stores/auth";
+import { writable } from "svelte/store";
 
 export type User = {
   id: string;
@@ -8,6 +9,8 @@ export type User = {
   created: string;
   modified: string;
 };
+
+export const user = writable(<User>{});
 
 export async function fetchSelf(): Promise<void> {
   const url = `${baseUrl}/profile`;
@@ -19,13 +22,26 @@ export async function fetchSelf(): Promise<void> {
     },
   });
 
-  if (!res.ok) {
-    throw Error("invalid token");
+  if (!handleStatus(res)) {
+    return;
   }
-
   const data = await res.json();
-  auth.set(<Auth>{
-    loggedIn: true,
-    user: data,
-  });
+  user.set(data);
 }
+
+export const fetchUser = async (id: string) => {
+  const url = `${baseUrl}/profile`;
+
+  const res = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: authHeader(),
+    },
+  });
+
+  if (!handleStatus(res)) {
+    return;
+  }
+  const data = await res.json();
+  return data;
+};
