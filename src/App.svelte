@@ -10,6 +10,7 @@
   import Project from "$src/routes/projects/project.svelte";
   import Commit from "$src/routes/commits/commit.svelte";
   import FileIndex from "$src/routes/files/index.svelte";
+  import RouteTransition from "./components/routetransition.svelte";
 </script>
 
 <div>
@@ -17,34 +18,49 @@
     <header>
       <Nav />
     </header>
-    <main class="container">
-      <Route path="/" component={Index} />
-      <Route path="/login" component={Login} />
-      <Route path="/logout" component={Logout} />
+
+    <main class="container" style="position: relative;">
+      <RouteTransition path="/">
+        <Index />
+      </RouteTransition>
+
+      <RouteTransition path="/login">
+        <Login />
+      </RouteTransition>
+
+      <RouteTransition path="/logout">
+        <Logout />
+      </RouteTransition>
+
       <Route path="/profile/*">
-        <Route path="/">
+        <RouteTransition path="/">
           <ProfileIndex />
-        </Route>
+        </RouteTransition>
       </Route>
-      <Route path="/register" component={Register} />
+
+      <RouteTransition path="/register">
+        <Register />
+      </RouteTransition>
 
       <Route path="/projects/*">
-        <Route path="/">
+        <RouteTransition path="/">
           <ProjectsList />
-        </Route>
+        </RouteTransition>
 
         <Route path="/:id/*" let:params={project}>
-          <Route path="/">
+          <RouteTransition path="/">
             <Project id={project.id} />
-          </Route>
+          </RouteTransition>
 
           <Route path="/commits/:id/*" let:params={commit}>
-            <Route path="/">
+            <RouteTransition path="/">
               <Commit pid={project.id} cid={commit.id} />
-            </Route>
+            </RouteTransition>
 
-            <Route path="/files/:id" let:params={file}>
-              <FileIndex pid={project.id} cid={commit.id} fid={file.id} />
+            <Route path="/files/:id/*" let:params={file}>
+              <RouteTransition route="/">
+                <FileIndex pid={project.id} cid={commit.id} fid={file.id} />
+              </RouteTransition>
             </Route>
           </Route>
         </Route>
