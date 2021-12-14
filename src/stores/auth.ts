@@ -10,6 +10,13 @@ token.subscribe((token) => {
   authHeaderStr = `Bearer ${token}`;
 });
 
+export class AuthError extends Error {
+  constructor(msg: string) {
+    super(msg);
+    Object.setPrototypeOf(this, AuthError.prototype);
+  }
+}
+
 export const login = async (email: string, password: string): Promise<void> => {
   const url = `${baseUrl}/login`;
 
@@ -27,7 +34,7 @@ export const login = async (email: string, password: string): Promise<void> => {
   });
 
   if (!res.ok) {
-    throw Error(res.statusText);
+    throw new AuthError(res.statusText);
   }
   const data = await res.json();
   token.set(data.token);

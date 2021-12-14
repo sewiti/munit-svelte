@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as yup from "yup";
-  import { login } from "$src/stores/auth";
+  import { AuthError, login } from "$src/stores/auth";
   import FormErrs from "$src/components/formerrs.svelte";
   import { navigate } from "svelte-navigator";
 
@@ -14,6 +14,7 @@
     {
       email: string[];
       password: string[];
+      login: string[];
     }
   >{};
 
@@ -45,6 +46,15 @@
         }, <typeof errs>{});
         return;
       }
+
+      if (err instanceof AuthError) {
+        errs = <typeof errs>{
+          login: ["Incorrect email address or password."],
+        };
+        touched = false;
+        return;
+      }
+
       console.error(err);
     } finally {
       loading = false;
@@ -88,5 +98,8 @@
     >
       Login
     </button>
+    <div style="color:indianred">
+      {errs.login || ""}
+    </div>
   </form>
 </article>
