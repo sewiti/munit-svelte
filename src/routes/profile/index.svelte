@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { appName } from "$src/constants";
+
   import { fetchSelf, User } from "$src/stores/user";
   import { onMount } from "svelte";
 
@@ -11,7 +13,7 @@
 </script>
 
 <svelte:head>
-  <title>Profile</title>
+  <title>My Profile - {appName}</title>
 </svelte:head>
 
 <h1 aria-busy={loading}>{profile.email || ""}</h1>

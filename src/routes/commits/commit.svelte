@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { appName } from "$src/constants";
+
   import { Commit, fetchCommit } from "$src/stores/commit";
   import type { MunitFile } from "$src/stores/file";
   import { fetchFiles } from "$src/stores/files";
@@ -21,7 +23,7 @@
 </script>
 
 <svelte:head>
-  <title>Commit</title>
+  <title>{commit.title || "Commit"} - {appName}</title>
 </svelte:head>
 
 <h1 aria-busy={loading}>{commit.title || ""}</h1>

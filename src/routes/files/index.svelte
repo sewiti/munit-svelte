@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { appName } from "$src/constants";
+
   import { fetchFile, MunitFile } from "$src/stores/file";
   import { onMount } from "svelte";
 
@@ -15,7 +17,7 @@
 </script>
 
 <svelte:head>
-  <title>File</title>
+  <title>{file.path || "File"} - {appName}</title>
 </svelte:head>
 
 <h1 aria-busy={loading}>{file.path || ""}</h1>

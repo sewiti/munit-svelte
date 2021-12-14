@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { appName } from "$src/constants";
+
   import type { Commit } from "$src/stores/commit";
 
   import { fetchCommits } from "$src/stores/commits";
@@ -21,7 +23,7 @@
 </script>
 
 <svelte:head>
-  <title>Project</title>
+  <title>{project.name || "Project"} - {appName}</title>
 </svelte:head>
 
 <h1 aria-busy={loading}>{project.name || ""}</h1>

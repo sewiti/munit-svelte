@@ -1,20 +1,34 @@
 <script lang="ts">
   import { Link } from "svelte-navigator";
   import { token } from "$src/stores/auth";
+  import { MenuIcon } from "svelte-feather-icons";
 </script>
 
 <nav class="container">
   <ul>
     <li>
-      <strong>
-        <Link class="contrast" to="/">Munit</Link>
-      </strong>
+      <Link class="secondary" to="/">
+        <strong class="brand">
+          <span style="color: var(--contrast);">Munit</span><span>.digital</span
+          >
+        </strong>
+      </Link>
     </li>
   </ul>
-  <ul>
-    {#if $token !== ""}
+
+  {#if $token === ""}
+    <ul>
       <li>
-        <Link to="/projects">Projects</Link>
+        <Link to="/register">Register</Link>
+      </li>
+      <li>
+        <Link to="/login">Login</Link>
+      </li>
+    </ul>
+  {:else}
+    <ul>
+      <li>
+        <Link to="/projects">My Projects</Link>
       </li>
       <li>
         <Link to="/profile">My Profile</Link>
@@ -22,13 +36,15 @@
       <li>
         <Link to="/logout">Logout</Link>
       </li>
-    {:else}
-      <li>
-        <Link to="/register">Register</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-    {/if}
-  </ul>
+    </ul>
+  {/if}
 </nav>
+
+<style>
+  @import url("http://fonts.cdnfonts.com/css/coolvetica-2");
+  .brand {
+    font-family: "Coolvetica", var(--font-family);
+    font-size: x-large;
+    line-height: 1em;
+  }
+</style>

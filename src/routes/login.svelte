@@ -3,6 +3,7 @@
   import { AuthError, login } from "$src/stores/auth";
   import FormErrs from "$src/components/formerrs.svelte";
   import { navigate } from "svelte-navigator";
+  import { appName } from "$src/constants";
 
   let loading = false;
   let touched = false;
@@ -46,21 +47,25 @@
         }, <typeof errs>{});
         return;
       }
+      touched = false;
 
       if (err instanceof AuthError) {
         errs = <typeof errs>{
           login: ["Incorrect email address or password."],
         };
-        touched = false;
+
         return;
       }
-
       console.error(err);
     } finally {
       loading = false;
     }
   };
 </script>
+
+<svelte:head>
+  <title>Login - {appName}</title>
+</svelte:head>
 
 <article>
   <h1>Login</h1>

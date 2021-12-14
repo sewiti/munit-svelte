@@ -3,6 +3,7 @@
   import type { Project } from "$src/stores/project";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
+  import { appName } from "$src/constants";
 
   let loading = true;
   let projects = <Project[]>[];
@@ -13,10 +14,10 @@
 </script>
 
 <svelte:head>
-  <title>Projects</title>
+  <title>My Projects - {appName}</title>
 </svelte:head>
 
-<h1>Projects</h1>
+<h1>My Projects</h1>
 
 <table>
   <thead>

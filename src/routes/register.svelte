@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as yup from "yup";
   import FormErrs from "$src/components/formerrs.svelte";
+  import { appName } from "$src/constants";
 
   type Fields = {
     email: string;
@@ -53,7 +54,7 @@
 </script>
 
 <svelte:head>
-  <title>Register</title>
+  <title>Register - {appName}</title>
 </svelte:head>
 
 <article>
