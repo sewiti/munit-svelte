@@ -1,11 +1,8 @@
 import { baseUrl } from "$src/constants";
-import { writable } from "svelte/store";
 import { authHeader, handleStatus } from "$src/stores/auth";
 import type { Project } from "$src/stores/project";
 
-export const projects = writable<Project[]>([]);
-
-export async function fetchProjects(): Promise<void> {
+export async function fetchProjects(): Promise<Project[]> {
   const url = `${baseUrl}/projects`;
 
   const res = await fetch(url, {
@@ -18,6 +15,5 @@ export async function fetchProjects(): Promise<void> {
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  projects.set(data);
+  return await res.json();
 }

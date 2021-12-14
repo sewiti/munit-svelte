@@ -1,8 +1,15 @@
 <script lang="ts">
-  import { fetchProjects, projects } from "$src/stores/projects";
+  import { fetchProjects } from "$src/stores/projects";
+  import type { Project } from "$src/stores/project";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
-  onMount(fetchProjects);
+
+  let loading = true;
+  let projects = <Project[]>[];
+  onMount(async () => {
+    projects = await fetchProjects();
+    loading = false;
+  });
 </script>
 
 <svelte:head>
@@ -17,8 +24,8 @@
       <th scope="col">Name</th>
     </tr>
   </thead>
-  <tbody>
-    {#each $projects || [] as project}
+  <tbody aria-busy={loading}>
+    {#each projects as project}
       <tr>
         <th scope="row">
           <Link to={`/projects/${project.id}`}>

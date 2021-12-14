@@ -1,5 +1,4 @@
 import { baseUrl } from "$src/constants";
-import { writable } from "svelte/store";
 import { authHeader, handleStatus } from "./auth";
 
 export type Commit = {
@@ -12,9 +11,7 @@ export type Commit = {
   userID: string;
 };
 
-export const commit = writable(<Commit>{});
-
-export async function fetchCommit(pid: string, cid: string): Promise<void> {
+export async function fetchCommit(pid: string, cid: string): Promise<Commit> {
   const url = `${baseUrl}/projects/${pid}/commits/${cid}`;
 
   const res = await fetch(url, {
@@ -27,6 +24,5 @@ export async function fetchCommit(pid: string, cid: string): Promise<void> {
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  commit.set(data);
+  return await res.json();
 }

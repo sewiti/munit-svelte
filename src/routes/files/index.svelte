@@ -1,14 +1,16 @@
 <script lang="ts">
-  import { fetchFile, file } from "$src/stores/file";
-
+  import { fetchFile, MunitFile } from "$src/stores/file";
   import { onMount } from "svelte";
 
   export let pid = "";
   export let cid = "";
   export let fid = "";
 
-  onMount(() => {
-    fetchFile(pid, cid, fid);
+  let loading = true;
+  let file = <MunitFile>{};
+  onMount(async () => {
+    file = await fetchFile(pid, cid, fid);
+    loading = false;
   });
 </script>
 
@@ -16,4 +18,4 @@
   <title>File</title>
 </svelte:head>
 
-<h1>{$file.path}</h1>
+<h1 aria-busy={loading}>{file.path || ""}</h1>

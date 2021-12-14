@@ -1,13 +1,22 @@
 <script lang="ts">
-  import { commits, fetchCommits } from "$src/stores/commits";
+  import type { Commit } from "$src/stores/commit";
 
-  import { fetchProject, project } from "$src/stores/project";
+  import { fetchCommits } from "$src/stores/commits";
+  import { fetchProject, Project } from "$src/stores/project";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
+
   export let id = "";
-  onMount(() => {
-    fetchProject(id);
-    fetchCommits(id);
+
+  let loading = true;
+  let project = <Project>{};
+  let commits = <Commit[]>[];
+  onMount(async () => {
+    [project, commits] = await Promise.all([
+      fetchProject(id),
+      fetchCommits(id),
+    ]);
+    loading = false;
   });
 </script>
 
@@ -15,7 +24,7 @@
   <title>Project</title>
 </svelte:head>
 
-<h1>{$project.name}</h1>
+<h1 aria-busy={loading}>{project.name || ""}</h1>
 
 <table>
   <thead>
@@ -23,8 +32,8 @@
       <th scope="col">Title</th>
     </tr>
   </thead>
-  <tbody>
-    {#each $commits || [] as commit}
+  <tbody aria-busy={loading}>
+    {#each commits as commit}
       <tr>
         <th scope="row">
           <Link to={`/projects/${id}/commits/${commit.id}`}>

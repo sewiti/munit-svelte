@@ -1,5 +1,4 @@
 import { baseUrl } from "$src/constants";
-import { writable } from "svelte/store";
 import { authHeader, handleStatus } from "$src/stores/auth";
 
 export type MunitFile = {
@@ -12,13 +11,11 @@ export type MunitFile = {
   projectID: string;
 };
 
-export const file = writable(<MunitFile>{});
-
-export async function fetchFile(
+export const fetchFile = async (
   pid: string,
   cid: string,
   fid: string
-): Promise<void> {
+): Promise<MunitFile> => {
   const url = `${baseUrl}/projects/${pid}/commits/${cid}/files/${fid}`;
 
   const res = await fetch(url, {
@@ -31,6 +28,5 @@ export async function fetchFile(
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  file.set(data);
-}
+  return await res.json();
+};

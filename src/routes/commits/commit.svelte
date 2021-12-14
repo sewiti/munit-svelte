@@ -1,13 +1,22 @@
 <script lang="ts">
-  import { commit, fetchCommit } from "$src/stores/commit";
-  import { fetchFiles, files } from "$src/stores/files";
+  import { Commit, fetchCommit } from "$src/stores/commit";
+  import type { MunitFile } from "$src/stores/file";
+  import { fetchFiles } from "$src/stores/files";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
+
   export let pid = "";
   export let cid = "";
-  onMount(() => {
-    fetchCommit(pid, cid);
-    fetchFiles(pid, cid);
+
+  let loading = true;
+  let commit = <Commit>{};
+  let files = <MunitFile[]>[];
+  onMount(async () => {
+    [commit, files] = await Promise.all([
+      fetchCommit(pid, cid),
+      fetchFiles(pid, cid),
+    ]);
+    loading = false;
   });
 </script>
 
@@ -15,7 +24,7 @@
   <title>Commit</title>
 </svelte:head>
 
-<h1>{$commit.title}</h1>
+<h1 aria-busy={loading}>{commit.title || ""}</h1>
 
 <table>
   <thead>
@@ -23,8 +32,8 @@
       <th scope="col">Title</th>
     </tr>
   </thead>
-  <tbody>
-    {#each $files || [] as file}
+  <tbody aria-busy={loading}>
+    {#each files || [] as file}
       <tr>
         <th scope="row">
           <Link to={`/projects/${pid}/commits/${cid}/files/${file.id}`}>

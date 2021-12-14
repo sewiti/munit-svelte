@@ -5,7 +5,7 @@ import type { Commit } from "$src/stores/commit";
 
 export const commits = writable<Commit[]>([]);
 
-export async function fetchCommits(pid: string): Promise<void> {
+export async function fetchCommits(pid: string): Promise<Commit[]> {
   const url = `${baseUrl}/projects/${pid}/commits`;
 
   const res = await fetch(url, {
@@ -18,6 +18,5 @@ export async function fetchCommits(pid: string): Promise<void> {
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  commits.set(data);
+  return await res.json();
 }

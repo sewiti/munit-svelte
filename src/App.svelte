@@ -5,7 +5,7 @@
   import Login from "$src/routes/login.svelte";
   import Register from "$src/routes/register.svelte";
   import Logout from "$src/routes/logout.svelte";
-  import Profile from "$src/routes/profile.svelte";
+  import ProfileIndex from "$src/routes/profile/index.svelte";
   import ProjectsList from "$src/routes/projects/projectsList.svelte";
   import Project from "$src/routes/projects/project.svelte";
   import Commit from "$src/routes/commits/commit.svelte";
@@ -21,11 +21,17 @@
       <Route path="/" component={Index} />
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
-      <Route path="/profile" component={Profile} />
+      <Route path="/profile/*">
+        <Route path="/">
+          <ProfileIndex />
+        </Route>
+      </Route>
       <Route path="/register" component={Register} />
 
       <Route path="/projects/*">
-        <Route path="/" component={ProjectsList} />
+        <Route path="/">
+          <ProjectsList />
+        </Route>
 
         <Route path="/:id/*" let:params={project}>
           <Route path="/">

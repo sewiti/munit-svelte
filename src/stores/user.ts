@@ -1,6 +1,5 @@
 import { baseUrl } from "$src/constants";
 import { authHeader, handleStatus, logout } from "$src/stores/auth";
-import { writable } from "svelte/store";
 
 export type User = {
   id: string;
@@ -10,9 +9,7 @@ export type User = {
   modified: string;
 };
 
-export const user = writable(<User>{});
-
-export async function fetchSelf(): Promise<void> {
+export async function fetchSelf(): Promise<User> {
   const url = `${baseUrl}/profile`;
 
   const res = await fetch(url, {
@@ -25,11 +22,10 @@ export async function fetchSelf(): Promise<void> {
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  user.set(data);
+  return await res.json();
 }
 
-export const fetchUser = async (id: string) => {
+export const fetchUser = async (id: string): Promise<User> => {
   const url = `${baseUrl}/profile`;
 
   const res = await fetch(url, {
@@ -42,6 +38,5 @@ export const fetchUser = async (id: string) => {
   if (!handleStatus(res)) {
     return;
   }
-  const data = await res.json();
-  return data;
+  return await res.json();
 };
