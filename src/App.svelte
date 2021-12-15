@@ -1,16 +1,22 @@
 <script lang="ts">
+  import RouteTransition from "./components/routetransition.svelte";
   import { Router, Route } from "svelte-navigator";
   import Nav from "$src/components/nav.svelte";
+
   import Index from "$src/routes/index.svelte";
   import Login from "$src/routes/login.svelte";
-  import Register from "$src/routes/register.svelte";
   import Logout from "$src/routes/logout.svelte";
+  import Register from "$src/routes/register.svelte";
+
   import ProfileIndex from "$src/routes/profile/index.svelte";
-  import ProjectsList from "$src/routes/projects/projectsList.svelte";
+
   import Project from "$src/routes/projects/project.svelte";
+  import ProjectsList from "$src/routes/projects/list.svelte";
+  import ProjectCreate from "$src/routes/projects/create.svelte";
+  import ProjectEdit from "$src/routes/projects/edit.svelte";
+
   import Commit from "$src/routes/commits/commit.svelte";
   import FileIndex from "$src/routes/files/index.svelte";
-  import RouteTransition from "./components/routetransition.svelte";
 </script>
 
 <div>
@@ -47,9 +53,17 @@
           <ProjectsList />
         </RouteTransition>
 
+        <RouteTransition path="/create">
+          <ProjectCreate />
+        </RouteTransition>
+
         <Route path="/:id/*" let:params={project}>
           <RouteTransition path="/">
             <Project id={project.id} />
+          </RouteTransition>
+
+          <RouteTransition path="/edit">
+            <ProjectEdit pid={project.id} />
           </RouteTransition>
 
           <Route path="/commits/:id/*" let:params={commit}>

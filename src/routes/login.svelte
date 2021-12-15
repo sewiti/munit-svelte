@@ -71,7 +71,7 @@
   <h1>Login</h1>
 
   <form on:submit|preventDefault>
-    <label for="emaila">Email address</label>
+    <label for="email">Email address</label>
     <input
       type="email"
       name="email"
@@ -80,6 +80,8 @@
       autocomplete="email"
       aria-invalid={touched ? (errs.email || []).length > 0 : null}
       bind:value={fields.email}
+      maxlength="112"
+      required
     />
     <FormErrs errors={errs.email} />
 
@@ -92,6 +94,9 @@
       autocomplete="current-password"
       aria-invalid={touched ? (errs.password || []).length > 0 : null}
       bind:value={fields.password}
+      minlength="8"
+      maxlength="72"
+      required
     />
     <FormErrs errors={errs.password} />
 

@@ -1,7 +1,6 @@
 import { baseUrl } from "$src/constants";
 import { navigate } from "svelte-navigator";
 import { writable } from "svelte/store";
-import type { User } from "$src/stores/user";
 
 let authHeaderStr = "";
 

@@ -30,7 +30,7 @@
       .string()
       .required("Password is required")
       .min(8, (msg) => `Password must be at least ${msg.min} characters`)
-      .max(72, (msg) => `password must be at most ${msg.max} characters`),
+      .max(72, (msg) => `Password must be at most ${msg.max} characters`),
     confirmPassword: yup
       .string()
       .required("Please confirm your password")
@@ -79,6 +79,7 @@
       autocomplete="email"
       aria-invalid={touched ? (errs.email || []).length > 0 : null}
       bind:value={fields.email}
+      maxlength="112"
       required
     />
     <FormErrs errors={errs.email} />
@@ -92,6 +93,8 @@
       autocomplete="current-password"
       aria-invalid={touched ? (errs.password || []).length > 0 : null}
       bind:value={fields.password}
+      minlength="8"
+      maxlength="72"
       required
     />
     <FormErrs errors={errs.password} />
@@ -104,6 +107,8 @@
       aria-label="Confirm password"
       aria-invalid={touched ? (errs.confirmPassword || []).length > 0 : null}
       bind:value={fields.confirmPassword}
+      minlength="8"
+      maxlength="72"
       required
     />
     <FormErrs errors={errs.confirmPassword} />

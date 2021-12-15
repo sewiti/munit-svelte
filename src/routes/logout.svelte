@@ -1,6 +1,5 @@
 <script lang="ts">
   import { appName } from "$src/constants";
-
   import { logout } from "$src/stores/auth";
   import { onMount } from "svelte";
 
