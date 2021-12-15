@@ -60,6 +60,19 @@ export const editProject = async (
   return await res.json();
 };
 
+export const deleteProject = async (id: string): Promise<void> => {
+  const url = `${baseUrl}/projects/${id}`;
+  const res = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Authorization: authHeader(),
+    },
+  });
+  if (!handleStatus(res)) {
+    return;
+  }
+};
+
 export const getProject = async (id: string): Promise<Project> => {
   const url = `${baseUrl}/projects/${id}`;
 

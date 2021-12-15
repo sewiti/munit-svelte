@@ -2,20 +2,7 @@
   import { Link } from "svelte-navigator";
   import { token } from "$src/stores/auth";
   import { MenuIcon } from "svelte-feather-icons";
-
-  const clickOutside = (node) => {
-    const handleClick = (event) => {
-      if (!node.contains(event.target)) {
-        node.dispatchEvent(new CustomEvent("outclick"));
-      }
-    };
-    document.addEventListener("click", handleClick, true);
-    return {
-      destroy() {
-        document.removeEventListener("click", handleClick, true);
-      },
-    };
-  };
+  import { clickOutside } from "$src/components/outclick";
 
   let dropdown = false;
   const toggleDropdown = () => {
