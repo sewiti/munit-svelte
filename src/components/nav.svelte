@@ -1,7 +1,21 @@
-<script lang="ts">
+<script>
   import { Link } from "svelte-navigator";
   import { token } from "$src/stores/auth";
   import { MenuIcon } from "svelte-feather-icons";
+
+  const clickOutside = (node) => {
+    const handleClick = (event) => {
+      if (!node.contains(event.target)) {
+        node.dispatchEvent(new CustomEvent("outclick"));
+      }
+    };
+    document.addEventListener("click", handleClick, true);
+    return {
+      destroy() {
+        document.removeEventListener("click", handleClick, true);
+      },
+    };
+  };
 
   let dropdown = false;
   const toggleDropdown = () => {
@@ -36,7 +50,12 @@
     </ul>
     <!-- Logged in dropdown (this is trash) -->
     <ul class="xs">
-      <div class="dropdown-container" hidden={!dropdown}>
+      <div
+        class="dropdown-container"
+        hidden={!dropdown}
+        use:clickOutside
+        on:outclick={hideDropdown}
+      >
         <article class="dropdown">
           <Link to="/register">Register</Link>
           <Link to="/login">Login</Link>
@@ -67,7 +86,12 @@
     </ul>
     <!-- Guest dropdown (this is trash) -->
     <ul class="xs">
-      <div class="dropdown-container" hidden={!dropdown}>
+      <div
+        class="dropdown-container"
+        hidden={!dropdown}
+        use:clickOutside
+        on:outclick={hideDropdown}
+      >
         <article class="dropdown">
           <Link to="/projects">My Projects</Link>
           <Link to="/profile">My Profile</Link>
