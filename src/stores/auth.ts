@@ -1,6 +1,7 @@
 import { baseUrl } from "$src/constants";
 import { navigate } from "svelte-navigator";
 import { writable } from "svelte/store";
+import type { User } from "$src/stores/user";
 
 let authHeaderStr = "";
 
@@ -10,12 +11,41 @@ token.subscribe((token) => {
   authHeaderStr = `Bearer ${token}`;
 });
 
+export const authHeader = (): string => {
+  return authHeaderStr;
+};
+
 export class AuthError extends Error {
   constructor(msg: string) {
     super(msg);
     Object.setPrototypeOf(this, AuthError.prototype);
   }
 }
+
+export const register = async (
+  email: string,
+  password: string
+): Promise<void> => {
+  const url = `${baseUrl}/register`;
+
+  const body = {
+    email: email,
+    password: password,
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    throw new AuthError(res.statusText);
+  }
+  await login(email, password);
+};
 
 export const login = async (email: string, password: string): Promise<void> => {
   const url = `${baseUrl}/login`;
@@ -43,10 +73,6 @@ export const login = async (email: string, password: string): Promise<void> => {
 export const logout = () => {
   token.set("");
   navigate("/");
-};
-
-export const authHeader = (): string => {
-  return authHeaderStr;
 };
 
 export const handleStatus = (res: Response): boolean => {

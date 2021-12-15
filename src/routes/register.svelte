@@ -2,28 +2,30 @@
   import * as yup from "yup";
   import FormErrs from "$src/components/formerrs.svelte";
   import { appName } from "$src/constants";
-
-  type Fields = {
-    email: string;
-    password: string;
-    confirmPassword: string;
-  };
-  type Errors = {
-    email: string[];
-    password: string[];
-    confirmPassword: string[];
-  };
+  import { register } from "$src/stores/auth";
+  import { navigate } from "svelte-navigator";
 
   let loading = false;
   let touched = false;
-  let fields = <Fields>{};
-  let errors = <Errors>{};
 
-  let schema = yup.object().shape({
+  let fields = {
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+  let errs = <
+    {
+      email: string[];
+      password: string[];
+      confirmPassword: string[];
+    }
+  >{};
+
+  const schema = yup.object().shape({
     email: yup
       .string()
-      .email("Must be a valid email")
-      .required("Email is required"),
+      .email("Must be a valid email address")
+      .required("Email address is required"),
     password: yup
       .string()
       .required("Password is required")
@@ -36,20 +38,27 @@
   });
 
   async function handleSubmit() {
-    touched = true;
     try {
+      touched = true;
+      loading = true;
+      errs = <typeof errs>{};
       schema.validateSync(fields, { abortEarly: false });
-    } catch (reason) {
-      errors = reason.inner.reduce(
-        (errs, err) => {
-          errs[err.path].push(err.message);
+      await register(fields.email, fields.password);
+      navigate("/projects");
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        errs = err.inner.reduce((errs, err) => {
+          errs[err.path] = err.errors;
           return errs;
-        },
-        <Errors>{ email: [], password: [], confirmPassword: [] }
-      );
-      return;
+        }, <typeof errs>{});
+        return;
+      }
+
+      touched = false;
+      console.error(err);
+    } finally {
+      loading = false;
     }
-    loading = true;
   }
 </script>
 
@@ -60,7 +69,7 @@
 <article>
   <h1>Register</h1>
 
-  <form>
+  <form on:submit|preventDefault>
     <label for="email">Email address</label>
     <input
       type="email"
@@ -68,11 +77,11 @@
       placeholder="Email address"
       aria-label="Email address"
       autocomplete="email"
-      aria-invalid={!touched ? null : errors.email.length > 0}
+      aria-invalid={touched ? (errs.email || []).length > 0 : null}
       bind:value={fields.email}
       required
     />
-    <FormErrs errors={errors.email} />
+    <FormErrs errors={errs.email} />
 
     <label for="password">Password</label>
     <input
@@ -81,11 +90,11 @@
       placeholder="Password"
       aria-label="Password"
       autocomplete="current-password"
-      aria-invalid={!touched ? null : errors.password.length > 0}
+      aria-invalid={touched ? (errs.password || []).length > 0 : null}
       bind:value={fields.password}
       required
     />
-    <FormErrs errors={errors.password} />
+    <FormErrs errors={errs.password} />
 
     <label for="confirm-password">Confirm password</label>
     <input
@@ -93,11 +102,11 @@
       name="confirm-password"
       placeholder="Confirm password"
       aria-label="Confirm password"
-      aria-invalid={!touched ? null : errors.confirmPassword.length > 0}
+      aria-invalid={touched ? (errs.confirmPassword || []).length > 0 : null}
       bind:value={fields.confirmPassword}
       required
     />
-    <FormErrs errors={errors.confirmPassword} />
+    <FormErrs errors={errs.confirmPassword} />
 
     <button
       type="submit"

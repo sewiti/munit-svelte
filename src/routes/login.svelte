@@ -38,7 +38,7 @@
       errs = <typeof errs>{};
       schema.validateSync(fields, { abortEarly: false });
       await login(fields.email, fields.password);
-      navigate("/");
+      navigate("/projects");
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         errs = err.inner.reduce((errs, err) => {
