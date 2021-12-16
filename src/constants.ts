@@ -1,2 +1,2 @@
-export const baseUrl = "https://dev.api.munit.digital";
+export const baseUrl = "https://api.munit.digital";
 export const appName = "Munit.digital";
