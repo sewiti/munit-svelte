@@ -9,6 +9,7 @@
   import Register from "$src/routes/register.svelte";
 
   import ProfileIndex from "$src/routes/profile/index.svelte";
+  import ProfileEdit from "$src/routes/profile/edit.svelte";
 
   import Project from "$src/routes/projects/project.svelte";
   import ProjectsList from "$src/routes/projects/list.svelte";
@@ -38,6 +39,10 @@
   <Route path="/profile/*">
     <RouteTransition path="/">
       <ProfileIndex />
+    </RouteTransition>
+
+    <RouteTransition path="/edit">
+      <ProfileEdit />
     </RouteTransition>
   </Route>
 

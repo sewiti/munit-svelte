@@ -3,6 +3,7 @@
   import Main from "$src/components/main.svelte";
   import { fetchSelf, User } from "$src/stores/user";
   import { onMount } from "svelte";
+  import { Link } from "svelte-navigator";
 
   let loading = true;
   let profile = <User>{};
@@ -18,6 +19,12 @@
 
 <Main>
   <article>
-    <h1 aria-busy={loading}>{profile.email || ""}</h1>
+    <h1
+      style="display: flex; justify-content: space-between;"
+      aria-busy={loading}
+    >
+      <span>{profile.email || ""}</span>
+      <Link to={"/profile/edit"} class="outline" role="button">Edit</Link>
+    </h1>
   </article>
 </Main>

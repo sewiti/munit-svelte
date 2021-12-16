@@ -25,6 +25,7 @@
   const schema = yup.object().shape({
     email: yup
       .string()
+      .max(112, (msg) => `Email address must be at most ${msg.max} characters`)
       .email("Must be a valid email address")
       .required("Email address is required"),
     password: yup
