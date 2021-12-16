@@ -23,7 +23,7 @@
   };
   const handleSubmit = async (): Promise<void> => {
     const project = await editProject(pid, fields.name, fields.desc);
-    navigate(`/projects/${project.id}`);
+    navigate(`/projects/${project.id}`, { replace: true });
   };
 
   const hideModal = () => {

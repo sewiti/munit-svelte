@@ -1,14 +1,14 @@
 <script lang="ts">
   import { appName } from "$src/constants";
   import Main from "$src/components/main.svelte";
-  import { fetchSelf, User } from "$src/stores/user";
+  import { getProfile, User } from "$src/services/profile";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
 
   let loading = true;
   let profile = <User>{};
   onMount(async () => {
-    profile = await fetchSelf();
+    profile = await getProfile();
     loading = false;
   });
 </script>

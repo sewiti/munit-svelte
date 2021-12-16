@@ -12,7 +12,7 @@
   };
   const handleSubmit = async (): Promise<void> => {
     const commit = await createCommit(pid, fields.title, fields.message);
-    navigate(`/projects/${pid}/commits/${commit.id}`);
+    navigate(`/projects/${pid}/commits/${commit.id}`, { replace: true });
   };
 </script>
 

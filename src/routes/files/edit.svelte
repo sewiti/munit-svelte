@@ -1,26 +1,29 @@
 <script lang="ts">
   import { appName } from "$src/constants";
-  import { deleteCommit, editCommit, getCommit } from "$src/services/commit";
+  import { deleteFile, editFile, getFile } from "$src/services/file";
   import { navigate } from "svelte-navigator";
   import { onMount } from "svelte";
   import Main from "$src/components/main.svelte";
   import Modal from "$src/components/modal.svelte";
-  import CommitForm from "$src/routes/commits/form.svelte";
+  import FileForm from "$src/routes/files/form.svelte";
 
   export let pid = "";
   export let cid = "";
+  export let fid = "";
 
   let loading = true;
   let loadingModal = false;
   let showModal = false;
 
   let fields = {
-    title: "",
-    message: "",
+    path: "",
+    data: "",
   };
   const handleSubmit = async (): Promise<void> => {
-    const commit = await editCommit(pid, cid, fields.title, fields.message);
-    navigate(`/projects/${pid}/commits/${commit.id}`, { replace: true });
+    const file = await editFile(pid, cid, fid, fields.path, fields.data);
+    navigate(`/projects/${pid}/commits/${cid}/files/${file.id}`, {
+      replace: true,
+    });
   };
 
   const hideModal = () => {
@@ -34,29 +37,29 @@
   const handleDelete = async () => {
     try {
       loadingModal = true;
-      await deleteCommit(pid, cid);
-      navigate(`/projects/${pid}`);
+      await deleteFile(pid, cid, fid);
+      navigate(`/projects/${pid}/commits/${cid}`);
     } finally {
       loadingModal = false;
     }
   };
 
   onMount(async () => {
-    const commit = await getCommit(pid, cid);
-    fields.title = commit.title;
-    fields.message = commit.message;
+    const file = await getFile(pid, cid, fid);
+    fields.path = file.path;
+    fields.data = file.data;
     loading = false;
   });
 </script>
 
 <svelte:head>
-  Edit Commit - {appName}
+  Edit File - {appName}
 </svelte:head>
 
 <Main>
   <article>
     <h1 style="display: flex; justify-content: space-between;">
-      <span>Edit Commit</span>
+      <span>Edit File</span>
       <div>
         <button
           class="outline destructive-outline"
@@ -70,7 +73,7 @@
     {#if loading}
       <div aria-busy={loading} />
     {:else}
-      <CommitForm buttonTitle="Save" callback={handleSubmit} bind:fields />
+      <FileForm buttonTitle="Save" callback={handleSubmit} bind:fields />
     {/if}
 
     <Modal bind:display={showModal}>

@@ -1,7 +1,9 @@
 <script lang="ts">
-  import RouteTransition from "$src/components/routetransition.svelte";
   import { Router, Route } from "svelte-navigator";
+  import RouteTransition from "$src/components/routetransition.svelte";
+
   import Nav from "$src/components/nav.svelte";
+  import Footer from "$src/components/footer.svelte";
 
   import Index from "$src/routes/index.svelte";
   import Login from "$src/routes/login.svelte";
@@ -21,7 +23,8 @@
   import CommitEdit from "$src/routes/commits/edit.svelte";
 
   import FileIndex from "$src/routes/files/index.svelte";
-  import Footer from "$src/components/footer.svelte";
+  import FileCreate from "$src/routes/files/create.svelte";
+  import FileEdit from "$src/routes/files/edit.svelte";
 </script>
 
 <Router>
@@ -84,9 +87,17 @@
           <CommitEdit pid={project.id} cid={commit.id} />
         </RouteTransition>
 
+        <RouteTransition path="/create">
+          <FileCreate pid={project.id} cid={commit.id} />
+        </RouteTransition>
+
         <Route path="/files/:id/*" let:params={file}>
           <RouteTransition route="/">
             <FileIndex pid={project.id} cid={commit.id} fid={file.id} />
+          </RouteTransition>
+
+          <RouteTransition path="/edit">
+            <FileEdit pid={project.id} cid={commit.id} fid={file.id} />
           </RouteTransition>
         </Route>
       </Route>

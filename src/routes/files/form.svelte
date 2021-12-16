@@ -5,24 +5,25 @@
   let loading = false;
   let touched = false;
   export let fields = {
-    title: "",
-    message: "",
+    path: "",
+    data: "",
   };
   let errs = <
     {
-      title: string[];
-      message: string[];
+      path: string[];
+      data: string[];
     }
   >{};
 
   const schema = yup.object().shape({
-    title: yup
+    path: yup
       .string()
-      .max(72, (msg) => `Title must be at most ${msg.max} characters`)
-      .required("Title is required"),
-    message: yup
+      .matches(new RegExp("/.*"), "Path must start with '/'")
+      .max(256, (msg) => `Path must be at most ${msg.max} characters`)
+      .required("Path is required"),
+    data: yup
       .string()
-      .max(1024, (msg) => `Message must be at most ${msg.max} characters`),
+      .max(1024, (msg) => `Data must be at most ${msg.max} characters`),
   });
 
   export let buttonTitle = "";
@@ -34,7 +35,7 @@
       loading = true;
       errs = <typeof errs>{};
       schema.validateSync(fields, { abortEarly: false });
-      await callback(fields.title, fields.message);
+      await callback(fields.path, fields.data);
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         errs = err.inner.reduce((errs, err) => {
@@ -53,30 +54,31 @@
 </script>
 
 <form on:submit|preventDefault>
-  <label for="title">Title</label>
+  <label for="path">Path</label>
   <input
     type="text"
-    name="title"
-    placeholder="Title"
-    aria-label="Title"
-    aria-invalid={touched ? (errs.title || []).length > 0 : null}
-    bind:value={fields.title}
-    maxlength="72"
+    name="path"
+    placeholder="Path"
+    aria-label="Path"
+    aria-invalid={touched ? (errs.path || []).length > 0 : null}
+    bind:value={fields.path}
+    maxlength="256"
+    pattern="/.*"
     required
   />
-  <FormErrs errors={errs.title} />
+  <FormErrs errors={errs.path} />
 
-  <label for="message">Message</label>
+  <label for="data">Data</label>
   <textarea
     style="resize: vertical;"
-    name="message"
-    placeholder="Message"
-    aria-label="Message"
-    aria-invalid={touched ? (errs.message || []).length > 0 : null}
-    bind:value={fields.message}
+    name="data"
+    placeholder="Data"
+    aria-label="Data"
+    aria-invalid={touched ? (errs.data || []).length > 0 : null}
+    bind:value={fields.data}
     maxlength="1024"
   />
-  <FormErrs errors={errs.message} />
+  <FormErrs errors={errs.data} />
 
   <button
     type="submit"

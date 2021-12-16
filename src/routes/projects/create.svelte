@@ -11,7 +11,7 @@
   };
   const handleSubmit = async (): Promise<void> => {
     const project = await createProject(fields.name, fields.desc);
-    navigate(`/projects/${project.id}`);
+    navigate(`/projects/${project.id}`, { replace: true });
   };
 </script>
 

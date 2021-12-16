@@ -2,8 +2,7 @@
   import { appName } from "$src/constants";
   import Main from "$src/components/main.svelte";
   import { Commit, getCommit } from "$src/services/commit";
-  import type { MunitFile } from "$src/stores/file";
-  import { fetchFiles } from "$src/stores/files";
+  import { getAllFiles, MunitFile } from "$src/services/file";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
 
@@ -16,7 +15,7 @@
   onMount(async () => {
     [commit, files] = await Promise.all([
       getCommit(pid, cid),
-      fetchFiles(pid, cid),
+      getAllFiles(pid, cid),
     ]);
     loading = false;
   });
