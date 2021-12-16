@@ -41,6 +41,14 @@
 
     <code aria-busy={loading}>
       {file.data || ""}
+      <!-- {file.data.replaceAll("\n", "<br/>") || ""} -->
     </code>
   </article>
 </Main>
+
+<style>
+  code {
+    display: block;
+    white-space: pre-wrap;
+  }
+</style>
