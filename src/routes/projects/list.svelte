@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PlusIcon } from "svelte-feather-icons";
+  import Main from "$src/components/main.svelte";
   import { getAllProjects, Project } from "$src/services/project";
   import { Link } from "svelte-navigator";
   import { appName } from "$src/constants";
@@ -17,28 +17,32 @@
   <title>My Projects - {appName}</title>
 </svelte:head>
 
-<article>
-  <h1 style="display: flex; justify-content: space-between;">
-    <span>My Projects</span>
-    <Link to="/projects/create" class="outline" role="button">New Project</Link>
-  </h1>
+<Main>
+  <article>
+    <h1 style="display: flex; justify-content: space-between;">
+      <span>My Projects</span>
+      <Link to="/projects/create" class="outline" role="button"
+        >New Project</Link
+      >
+    </h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-      </tr>
-    </thead>
-    <tbody aria-busy={loading}>
-      {#each projects as project}
+    <table>
+      <thead>
         <tr>
-          <th scope="row">
-            <Link to={`/projects/${project.id}`}>
-              {project.name}
-            </Link>
-          </th>
+          <th scope="col">Name</th>
         </tr>
-      {/each}
-    </tbody>
-  </table>
-</article>
+      </thead>
+      <tbody aria-busy={loading}>
+        {#each projects as project}
+          <tr>
+            <th scope="row">
+              <Link to={`/projects/${project.id}`}>
+                {project.name}
+              </Link>
+            </th>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </article>
+</Main>

@@ -2,6 +2,7 @@
   import * as yup from "yup";
   import FormErrs from "$src/components/formerrs.svelte";
   import { appName } from "$src/constants";
+  import Main from "$src/components/main.svelte";
   import { register } from "$src/stores/auth";
   import { navigate } from "svelte-navigator";
 
@@ -66,60 +67,62 @@
   <title>Register - {appName}</title>
 </svelte:head>
 
-<article>
-  <h1>Register</h1>
+<Main>
+  <article>
+    <h1>Register</h1>
 
-  <form on:submit|preventDefault>
-    <label for="email">Email address</label>
-    <input
-      type="email"
-      name="email"
-      placeholder="Email address"
-      aria-label="Email address"
-      autocomplete="email"
-      aria-invalid={touched ? (errs.email || []).length > 0 : null}
-      bind:value={fields.email}
-      maxlength="112"
-      required
-    />
-    <FormErrs errors={errs.email} />
+    <form on:submit|preventDefault>
+      <label for="email">Email address</label>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email address"
+        aria-label="Email address"
+        autocomplete="email"
+        aria-invalid={touched ? (errs.email || []).length > 0 : null}
+        bind:value={fields.email}
+        maxlength="112"
+        required
+      />
+      <FormErrs errors={errs.email} />
 
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Password"
-      aria-label="Password"
-      autocomplete="current-password"
-      aria-invalid={touched ? (errs.password || []).length > 0 : null}
-      bind:value={fields.password}
-      minlength="8"
-      maxlength="72"
-      required
-    />
-    <FormErrs errors={errs.password} />
+      <label for="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        aria-label="Password"
+        autocomplete="current-password"
+        aria-invalid={touched ? (errs.password || []).length > 0 : null}
+        bind:value={fields.password}
+        minlength="8"
+        maxlength="72"
+        required
+      />
+      <FormErrs errors={errs.password} />
 
-    <label for="confirm-password">Confirm password</label>
-    <input
-      type="password"
-      name="confirm-password"
-      placeholder="Confirm password"
-      aria-label="Confirm password"
-      aria-invalid={touched ? (errs.confirmPassword || []).length > 0 : null}
-      bind:value={fields.confirmPassword}
-      minlength="8"
-      maxlength="72"
-      required
-    />
-    <FormErrs errors={errs.confirmPassword} />
+      <label for="confirm-password">Confirm password</label>
+      <input
+        type="password"
+        name="confirm-password"
+        placeholder="Confirm password"
+        aria-label="Confirm password"
+        aria-invalid={touched ? (errs.confirmPassword || []).length > 0 : null}
+        bind:value={fields.confirmPassword}
+        minlength="8"
+        maxlength="72"
+        required
+      />
+      <FormErrs errors={errs.confirmPassword} />
 
-    <button
-      type="submit"
-      aria-busy={loading}
-      disabled={loading}
-      on:click={handleSubmit}
-    >
-      Register
-    </button>
-  </form>
-</article>
+      <button
+        type="submit"
+        aria-busy={loading}
+        disabled={loading}
+        on:click={handleSubmit}
+      >
+        Register
+      </button>
+    </form>
+  </article>
+</Main>

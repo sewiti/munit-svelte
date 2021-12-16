@@ -5,7 +5,7 @@
 </script>
 
 <Route {...$$props}>
-  <div in:fade={{ duration: 250, easing: cubicIn }}>
+  <div in:fade={{ duration: 300, easing: cubicIn }}>
     <slot />
   </div>
 </Route>

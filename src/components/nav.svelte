@@ -13,7 +13,7 @@
   };
 </script>
 
-<nav class="container">
+<nav class="container-fluid">
   <ul>
     <li>
       <Link class="secondary" to="/">

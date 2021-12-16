@@ -1,6 +1,6 @@
 <script lang="ts">
   import { appName } from "$src/constants";
-
+  import Main from "$src/components/main.svelte";
   import { fetchSelf, User } from "$src/stores/user";
   import { onMount } from "svelte";
 
@@ -16,4 +16,8 @@
   <title>My Profile - {appName}</title>
 </svelte:head>
 
-<h1 aria-busy={loading}>{profile.email || ""}</h1>
+<Main>
+  <article>
+    <h1 aria-busy={loading}>{profile.email || ""}</h1>
+  </article>
+</Main>

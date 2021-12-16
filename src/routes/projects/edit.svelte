@@ -6,7 +6,8 @@
     getProject,
   } from "$src/services/project";
   import ProfileForm from "$src/routes/projects/form.svelte";
-  import { navigate, useNavigate } from "svelte-navigator";
+  import { navigate } from "svelte-navigator";
+  import Main from "$src/components/main.svelte";
   import { onMount } from "svelte";
   import Modal from "$src/components/modal.svelte";
 
@@ -55,74 +56,76 @@
   Edit Project - {appName}
 </svelte:head>
 
-<article>
-  <h1 style="display: flex; justify-content: space-between;">
-    <span>Edit Project</span>
-    <div>
-      <button
-        class="outline destructive-outline"
-        on:click|preventDefault={toggleModal}
-      >
-        Delete
-      </button>
-    </div>
-  </h1>
+<Main>
+  <article>
+    <h1 style="display: flex; justify-content: space-between;">
+      <span>Edit Project</span>
+      <div>
+        <button
+          class="outline destructive-outline"
+          on:click|preventDefault={toggleModal}
+        >
+          Delete
+        </button>
+      </div>
+    </h1>
 
-  {#if loading}
-    <div aria-busy={loading} />
-  {:else}
-    <ProfileForm buttonTitle="Save" callback={handleSubmit} bind:fields />
-  {/if}
+    {#if loading}
+      <div aria-busy={loading} />
+    {:else}
+      <ProfileForm buttonTitle="Save" callback={handleSubmit} bind:fields />
+    {/if}
 
-  <Modal bind:display={showModal}>
-    <h4>Are you sure you want to delete?</h4>
-    <div class="modalButtons">
-      <button
-        class="contrast outline"
-        on:click|preventDefault={hideModal}
-        disabled={loadingModal}
-      >
-        Cancel
-      </button>
-      <button
-        class="destructive"
-        aria-busy={loadingModal}
-        disabled={loadingModal}
-        on:click|preventDefault={handleDelete}
-      >
-        Delete
-      </button>
-    </div>
-  </Modal>
-</article>
+    <Modal bind:display={showModal}>
+      <h4>Are you sure you want to delete?</h4>
+      <div class="modalButtons">
+        <button
+          class="contrast outline"
+          on:click|preventDefault={hideModal}
+          disabled={loadingModal}
+        >
+          Cancel
+        </button>
+        <button
+          class="destructive"
+          aria-busy={loadingModal}
+          disabled={loadingModal}
+          on:click|preventDefault={handleDelete}
+        >
+          Delete
+        </button>
+      </div>
+    </Modal>
+  </article>
 
-<style>
-  .destructive {
-    background-color: indianred;
-    border-color: indianred;
-  }
+  <style>
+    .destructive {
+      background-color: indianred;
+      border-color: indianred;
+    }
 
-  .destructive:hover {
-    background-color: rgb(204, 115, 115);
-    border-color: rgb(204, 115, 115);
-  }
+    .destructive:hover {
+      background-color: rgb(204, 115, 115);
+      border-color: rgb(204, 115, 115);
+    }
 
-  .destructive-outline {
-    color: indianred;
-    border-color: indianred;
-  }
+    .destructive-outline {
+      color: indianred;
+      border-color: indianred;
+    }
 
-  .destructive-outline:hover {
-    color: rgb(204, 115, 115);
-    border-color: rgb(204, 115, 115);
-  }
+    .destructive-outline:hover {
+      color: rgb(204, 115, 115);
+      border-color: rgb(204, 115, 115);
+    }
 
-  .modalButtons {
-    display: flex;
-  }
+    .modalButtons {
+      display: flex;
+    }
 
-  .modalButtons > button {
-    margin-left: 1em;
-    margin-right: 1em;
-  }
-</style>
+    .modalButtons > button {
+      margin-left: 1em;
+      margin-right: 1em;
+    }
+  </style>
+</Main>

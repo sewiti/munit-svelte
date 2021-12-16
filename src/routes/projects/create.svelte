@@ -2,6 +2,7 @@
   import { appName } from "$src/constants";
   import { createProject } from "$src/services/project";
   import ProfileForm from "$src/routes/projects/form.svelte";
+  import Main from "$src/components/main.svelte";
   import { navigate } from "svelte-navigator";
 
   let fields = {
@@ -18,7 +19,13 @@
   New Project - {appName}
 </svelte:head>
 
-<article>
-  <h1>New Project</h1>
-  <ProfileForm buttonTitle="New Project" callback={handleSubmit} bind:fields />
-</article>
+<Main>
+  <article>
+    <h1>New Project</h1>
+    <ProfileForm
+      buttonTitle="New Project"
+      callback={handleSubmit}
+      bind:fields
+    />
+  </article>
+</Main>

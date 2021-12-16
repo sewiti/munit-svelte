@@ -1,6 +1,6 @@
 <script lang="ts">
   import { appName } from "$src/constants";
-
+  import Main from "$src/components/main.svelte";
   import { Commit, fetchCommit } from "$src/stores/commit";
   import type { MunitFile } from "$src/stores/file";
   import { fetchFiles } from "$src/stores/files";
@@ -26,23 +26,27 @@
   <title>{commit.title || "Commit"} - {appName}</title>
 </svelte:head>
 
-<h1 aria-busy={loading}>{commit.title || ""}</h1>
+<Main>
+  <article>
+    <h1 aria-busy={loading}>{commit.title || ""}</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">Title</th>
-    </tr>
-  </thead>
-  <tbody aria-busy={loading}>
-    {#each files || [] as file}
-      <tr>
-        <th scope="row">
-          <Link to={`/projects/${pid}/commits/${cid}/files/${file.id}`}>
-            {file.path}
-          </Link>
-        </th>
-      </tr>
-    {/each}
-  </tbody>
-</table>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody aria-busy={loading}>
+        {#each files || [] as file}
+          <tr>
+            <th scope="row">
+              <Link to={`/projects/${pid}/commits/${cid}/files/${file.id}`}>
+                {file.path}
+              </Link>
+            </th>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </article>
+</Main>
