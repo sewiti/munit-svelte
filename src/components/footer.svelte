@@ -1,18 +1,14 @@
-<script>
-  import { Link } from "svelte-navigator";
-</script>
-
 <footer class="footer">
   <div class="container" style="text-align:center">
     <ul>
       <li>
-        <Link
+        <a
           class="contrast"
           style="text-decoration: none;"
-          to="https://github.com/sewiti/munit-svelte"
+          href="https://github.com/sewiti/munit-svelte"
         >
           GitHub
-        </Link>
+        </a>
       </li>
     </ul>
     <ul style="color: var(--muted-color)">
