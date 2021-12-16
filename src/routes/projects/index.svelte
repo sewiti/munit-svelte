@@ -1,11 +1,10 @@
 <script lang="ts">
   import { appName } from "$src/constants";
-  import Main from "$src/components/main.svelte";
-  import type { Commit } from "$src/stores/commit";
-  import { fetchCommits } from "$src/stores/commits";
+  import { getAllCommits, Commit } from "$src/services/commit";
   import { getProject, Project } from "$src/services/project";
-  import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
+  import { onMount } from "svelte";
+  import Main from "$src/components/main.svelte";
 
   export let id = "";
 
@@ -13,7 +12,7 @@
   let project = <Project>{};
   let commits = <Commit[]>[];
   onMount(async () => {
-    [project, commits] = await Promise.all([getProject(id), fetchCommits(id)]);
+    [project, commits] = await Promise.all([getProject(id), getAllCommits(id)]);
     loading = false;
   });
 </script>
@@ -30,9 +29,12 @@
         aria-busy={loading}
       >
         <span>{project.name || ""}</span>
-        <Link to={`/projects/${id}/edit`} class="outline" role="button"
-          >Edit</Link
-        >
+        <div>
+          <Link to={`/projects/${id}/edit`} class="outline" role="button">
+            Edit Project
+          </Link>
+          <Link to={`/projects/${id}/create`} role="button">New Commit</Link>
+        </div>
       </h1>
       <h2 aria-busy={loading}>{project.description || ""}</h2>
     </hgroup>

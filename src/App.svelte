@@ -11,12 +11,15 @@
   import ProfileIndex from "$src/routes/profile/index.svelte";
   import ProfileEdit from "$src/routes/profile/edit.svelte";
 
-  import Project from "$src/routes/projects/project.svelte";
+  import Project from "$src/routes/projects/index.svelte";
   import ProjectsList from "$src/routes/projects/list.svelte";
   import ProjectCreate from "$src/routes/projects/create.svelte";
   import ProjectEdit from "$src/routes/projects/edit.svelte";
 
-  import Commit from "$src/routes/commits/commit.svelte";
+  import CommitIndex from "$src/routes/commits/index.svelte";
+  import CommitCreate from "$src/routes/commits/create.svelte";
+  import CommitEdit from "$src/routes/commits/edit.svelte";
+
   import FileIndex from "$src/routes/files/index.svelte";
   import Footer from "$src/components/footer.svelte";
 </script>
@@ -68,9 +71,17 @@
         <ProjectEdit pid={project.id} />
       </RouteTransition>
 
+      <RouteTransition path="/create">
+        <CommitCreate pid={project.id} />
+      </RouteTransition>
+
       <Route path="/commits/:id/*" let:params={commit}>
         <RouteTransition path="/">
-          <Commit pid={project.id} cid={commit.id} />
+          <CommitIndex pid={project.id} cid={commit.id} />
+        </RouteTransition>
+
+        <RouteTransition path="/edit">
+          <CommitEdit pid={project.id} cid={commit.id} />
         </RouteTransition>
 
         <Route path="/files/:id/*" let:params={file}>

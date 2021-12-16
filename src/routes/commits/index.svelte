@@ -1,7 +1,7 @@
 <script lang="ts">
   import { appName } from "$src/constants";
   import Main from "$src/components/main.svelte";
-  import { Commit, fetchCommit } from "$src/stores/commit";
+  import { Commit, getCommit } from "$src/services/commit";
   import type { MunitFile } from "$src/stores/file";
   import { fetchFiles } from "$src/stores/files";
   import { onMount } from "svelte";
@@ -15,7 +15,7 @@
   let files = <MunitFile[]>[];
   onMount(async () => {
     [commit, files] = await Promise.all([
-      fetchCommit(pid, cid),
+      getCommit(pid, cid),
       fetchFiles(pid, cid),
     ]);
     loading = false;
@@ -28,7 +28,27 @@
 
 <Main>
   <article>
-    <h1 aria-busy={loading}>{commit.title || ""}</h1>
+    <hgroup>
+      <h1
+        style="display: flex; justify-content: space-between;"
+        aria-busy={loading}
+      >
+        <span>{commit.title || ""}</span>
+        <div>
+          <Link
+            to={`/projects/${pid}/commits/${cid}/edit`}
+            class="outline"
+            role="button"
+          >
+            Edit Commit
+          </Link>
+          <Link to={`/projects/${pid}/commits/${cid}/create`} role="button">
+            New File
+          </Link>
+        </div>
+      </h1>
+      <h2 aria-busy={loading}>{commit.message || ""}</h2>
+    </hgroup>
 
     <table>
       <thead>

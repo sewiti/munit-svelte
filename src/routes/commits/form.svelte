@@ -5,24 +5,24 @@
   let loading = false;
   let touched = false;
   export let fields = {
-    name: "",
-    desc: "",
+    title: "",
+    message: "",
   };
   let errs = <
     {
-      name: string[];
-      desc: string[];
+      title: string[];
+      message: string[];
     }
   >{};
 
   const schema = yup.object().shape({
-    name: yup
+    title: yup
       .string()
-      .max(72, (msg) => `Project name must be at most ${msg.max} characters`)
-      .required("Project name is required"),
-    desc: yup
+      .max(72, (msg) => `Title must be at most ${msg.max} characters`)
+      .required("Title is required"),
+    message: yup
       .string()
-      .max(1024, (msg) => `Description must be at most ${msg.max} characters`),
+      .max(1024, (msg) => `Message must be at most ${msg.max} characters`),
   });
 
   export let buttonTitle = "";
@@ -34,7 +34,7 @@
       loading = true;
       errs = <typeof errs>{};
       schema.validateSync(fields, { abortEarly: false });
-      await callback(fields.name, fields.desc);
+      await callback(fields.title, fields.message);
     } catch (err) {
       if (err instanceof yup.ValidationError) {
         errs = err.inner.reduce((errs, err) => {
@@ -53,30 +53,30 @@
 </script>
 
 <form on:submit|preventDefault>
-  <label for="name">Project name</label>
+  <label for="title">Title</label>
   <input
     type="text"
-    name="name"
-    placeholder="Project name"
-    aria-label="Project name"
-    aria-invalid={touched ? (errs.name || []).length > 0 : null}
-    bind:value={fields.name}
+    name="title"
+    placeholder="Title"
+    aria-label="Title"
+    aria-invalid={touched ? (errs.title || []).length > 0 : null}
+    bind:value={fields.title}
     maxlength="72"
     required
   />
-  <FormErrs errors={errs.name} />
+  <FormErrs errors={errs.title} />
 
-  <label for="desc">Description</label>
-  <textarea
-    style="resize: vertical;"
-    name="desc"
-    placeholder="Description"
-    aria-label="Description"
-    aria-invalid={touched ? (errs.desc || []).length > 0 : null}
-    bind:value={fields.desc}
+  <label for="message">Message</label>
+  <input
+    type="text"
+    name="message"
+    placeholder="Message"
+    aria-label="Message"
+    aria-invalid={touched ? (errs.message || []).length > 0 : null}
+    bind:value={fields.message}
     maxlength="1024"
   />
-  <FormErrs errors={errs.desc} />
+  <FormErrs errors={errs.message} />
 
   <button
     type="submit"

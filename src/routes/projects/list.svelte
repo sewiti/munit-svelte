@@ -21,9 +21,7 @@
   <article>
     <h1 style="display: flex; justify-content: space-between;">
       <span>My Projects</span>
-      <Link to="/projects/create" class="outline" role="button"
-        >New Project</Link
-      >
+      <Link to="/projects/create" role="button">New Project</Link>
     </h1>
 
     <table>

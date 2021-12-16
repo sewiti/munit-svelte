@@ -66,7 +66,7 @@
   />
   <FormErrs errors={errs.displayName} />
 
-  <label for="name">Email address</label>
+  <label for="email">Email address</label>
   <input
     type="email"
     name="email"
